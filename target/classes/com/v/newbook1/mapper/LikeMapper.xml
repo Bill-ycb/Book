@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.v.newbook1.mapper.LikeMapper">
+    <insert id="addLike" parameterType="like">
+        insert into `like` set book_id=#{bookId},user_id=#{userId}
+        <selectKey keyProperty="coId" order="AFTER" resultType="Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="getLike"  resultType="com.v.newbook1.model.BookAndUser" parameterType="com.v.newbook1.dto.PageQueryDTO">
+        select l.co_id,b.book_id, b.user_id, b.category_id, b.name as bookName, b.image, b.msg, b.price,b.author,b.press ,b.status, b.create_time, b.update_time,u.head,u.connect,u.name as userName
+        from book b
+        join user u on b.user_id = u.user_id
+        join test.`like` l on b.book_id = l.book_id
+        <where>
+            <if test="categoryId !=0">
+                and b.category_id =#{categoryId}
+            </if>
+            <if test="bookName != null">
+                <bind name="searchText" value="'%' + bookName + '%'"/>
+                and b.name LIKE #{searchText}
+            </if>
+            <if test="startTime != null">
+                and b.create_time &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                and b.create_time &lt; #{endTime}
+            </if>
+            <if test="true">
+                and l.user_id = #{userId}
+            </if>
+        </where>
+        order by ${orderWay} desc
+    </select>
+</mapper>

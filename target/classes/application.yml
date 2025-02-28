@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring:
+  data:
+    redis:
+      host: 121.40.230.211
+      port: 6379
+      database: 0
+      connect-timeout: 1000
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.40.230.211:3306/test
+    username: root
+    password: Zc123456..
+mybatis:
+  mapper-locations: classpath:mapper/*.xml              #mapper文件位置
+  type-aliases-package: com.v.newbook1.model           #其他类位置
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    root: debug
+vbook:
+  wechat:
+    app-id: wx9093b362257a3ad3
+    secret: b856b15fbf7a56530f2488c3ee74d793
