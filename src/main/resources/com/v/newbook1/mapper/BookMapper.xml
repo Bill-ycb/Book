@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.v.newbook1.mapper.BookMapper">
+    <insert id="addBook" parameterType="book">
+        insert into book(user_id, category_id, name, image, msg, price, author, press,status, create_time, update_time)
+        VALUES (#{userId},#{categoryId},#{name},#{image},#{msg},#{price},#{author},#{press},#{status},#{createTime},#{updateTime})
+        <selectKey keyProperty="bookId" order="AFTER" resultType="Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="getAllBook" resultType="com.v.newbook1.model.Book">
+        select book_id, user_id, category_id, name, image, msg, price, status, author, press,create_time, update_time from book
+        <where>
+            <if test="categoryId !=0">
+                and category_id =#{categoryId}
+            </if>
+            <if test="bookName != null">
+                <bind name="searchText" value="'%' + bookName + '%'"/>
+                and name LIKE #{searchText}
+            </if>
+            <if test="startTime != null">
+                and create_time &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                and create_time &lt; #{endTime}
+            </if>
+            <if test="userId != 0">
+                and user_id = #{userId}
+            </if>
+        </where>
+        order by ${orderWay} desc
+    </select>
+</mapper>

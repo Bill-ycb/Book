@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.v.newbook1.mapper.UserMapper">
+
+
+    <update id="update">
+        update user
+        <set>
+            <if test="head != null">head=#{head},</if>
+            <if test="idNumber != null">id_number=#{idNumber},</if>
+            <if test="connect != null">connect=#{connect},</if>
+            <if test="name != null">name=#{name}</if>
+        </set>
+        WHERE user_id=#{userId}
+    </update>
+</mapper>
